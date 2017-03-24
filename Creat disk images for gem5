@@ -1,0 +1,19 @@
+cd ${gem5}
+sudo util/gem5img.py init ubuntu-12.04.img 4096
+wget http://mirror1.ku.ac.th/ubuntu-cdimages/ubuntu-core/releases/12.04.5/release/ubuntu-core-12.04.5-core-amd64.tar.gz
+sudo mkdir mnt
+sudo util/gem5img.py mount ubuntu-12.04.img mnt
+
+sudo tar xzvf ubuntu-core-12.04-core-amd64.tar.gz -C mnt
+sudo cp /etc/resolv.conf mnt/etc/
+
+sudo vim mnt/etc/init/tty-gem5.conf
+sudo vim mnt/etc/hosts
+sudo vim mnt/etc/fstab
+
+cd ${gem5}/util/m5
+make -f Makefile.x86
+
+cd ${gem5}
+sudo cp util/m5/Makefile.x86 mnt/sbin/
+sudo util/gem5img.py umount mnt/
